@@ -1,0 +1,214 @@
+#####
+##  description: system monitor for desktop
+##  author: stasik
+##  email: stasikprog@gmail.com
+##  version: 0.3
+##  date: nov 2010
+#####
+
+karamba x=0 y=0 w=320 h=740 interval=1833000 locked=true  #interval=30 min
+
+defaultfont color=255,255,255 fontsize=12 font="Clean" shadow=0
+
+# [ background ]
+image x=0 y=0 path="images/wallpaper.png" interval=36733000 # 10 hours
+
+# [ Home icon ]
+image x=25 y=20 path="images/system.png" interval=36733000 # 10 hours
+
+# [ Time icon ]
+image x=25 y=90 path="images/clock.png" interval=36733000 # 10 hours
+
+# [ CPU icon ]
+image x=25 y=180 path="images/cpu.png" interval=36733000 # 10 hours
+
+# [ CPU Status icon ]
+image x=25 y=243 path="images/cpu-status.png" interval=36733000 # 10 hours
+
+# [ Memory icon ]
+image x=25 y=305 path="images/memory.png" interval=36733000 # 10 hours
+
+# [ Nework icon ]
+image x=25 y=370 path="images/cable.png" interval=36733000 # 10 hours
+
+# [ Hard disk icon ]
+image x=25 y=453 path="images/hdd.png" interval=36733000 # 10 hours
+
+# [ Proc icon ]
+image x=25 y=532 path="images/proc.png" interval=36733000 # 10 hours
+
+# [ GPU icon ]
+image x=25 y=670 path="images/gpu.png" interval=36733000 # 10 hours
+
+
+# [ Proccess status ]
+<group> x=10 y=589
+      text  x=0 y=0 value="Running:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+      text  x=85 y=0 sensor=program program="ps axr| wc -l" fontsize=11 font="Blue Highway" align=right interval=1100 # 1 sec
+
+      text  x=0 y=13 color=192,192,192 value="Load:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+      text  x=85 y=13 color=192,192,192 sensor=cpu cpu=all format=%load% fontsize=11 font="Blue Highway" align=right interval=1200 # 1 sec
+
+      text  x=0 y=26 value="User:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+      text  x=85 y=26 sensor=cpu cpu=all format=%user% fontsize=11 font="Blue Highway" align=right interval=1300 # 1 sec
+
+      text  x=0 y=39 color=192,192,192 value="System:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+      text  x=85 y=39 color=192,192,192 sensor=cpu cpu=all format=%system% fontsize=11 font="Blue Highway" align=right interval=1400 # 1 sec
+
+      text  x=0 y=52  value="Process:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+      text  x=85 y=52  sensor=program program="ps xa | wc | cut -c 4-12" fontsize=11 font="Blue Highway" align=right interval=1500 # 1 sec
+</group>
+
+
+# [ System info ]
+<group> x=105 y=10
+	text x=5 y=0 value="User:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=0 fontsize=11 font="Blue Highway" sensor=program program="echo ${USER}@`hostname`" align=right  interval=26899000 # 8 hours
+
+	text x=5 y=15 color=192,192,192 value="Distro:"  fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+        text x=185 y=15 color=192,192,192 sensor=program program="cat /etc/*release | head -n 1 " fontsize=11 font="Blue Highway" align=right interval=29838000 # 8 hours
+
+	text x=5 y=30 value="Kernel:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=30 fontsize=11 font="Blue Highway" sensor=program program="uname -r" align=right interval=30844000 # 8 hours
+
+        text x=5 y=45 color=192,192,192 value="KDE:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+        text x=185 y=45 color=192,192,192 fontsize=11 font="Blue Highway" align=right sensor=program program="kde4-config --version | grep 'KDE' | sed -e 's/.*: //' | sed -e 's/(.*)//'" interval=29939000 # 8 hours
+
+	text x=5 y=60 value="Qt:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=60 fontsize=11 font="Blue Highway" align=right sensor=program program="kde4-config --version | grep 'Qt' | sed -e 's/.*: //'" interval=29007000 # 8 hours
+</group>
+image x=75 y=85 path="images/separator.png" interval=36733000 # 10 hours
+                   # [ EOF - System info ]
+
+
+# [ Date & time info ]
+<group> x=105 y=95
+	text x=5 y=0 value="Time:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=0 fontsize=11 font="Blue Highway" sensor=time format="HH:mm:ss" align=right interval=1000 # 1 sec
+
+	text x=5 y=15 color=192,192,192 value="Date:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=15 color=192,192,192 fontsize=11 font="Blue Highway" sensor=program program="date '+%a, %d %b %Y'" align=right interval=784000 #13 min
+
+	text x=5 y=30 value="Uptime:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=30 fontsize=11 font="Blue Highway" sensor=uptime format="%d day(s)  %H:%M" align=right interval=248000 #4 min
+</group>
+image x=5 y=140 path="images/separator.png" interval=36733000 # 10 hours
+                     # [ EOF - Date & time info ]
+
+
+# [ CPU info ]
+<group> x=105 y=150
+	text x=50 y=0 sensor=program program="cat /proc/cpuinfo | grep '^model name' | sed -e 's/.*: //' | head -n 1" fontsize=12 font="Larabiefont" align=center interval=28827000 # 8 hours
+
+	text x=5 y=20 value="Architecture:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=20 fontsize=11 font="Blue Highway" sensor=program program="uname -m" align=right interval=28738000 # 8 hours
+
+	text x=5 y=35 color=192,192,192 value="CPU Frequency:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=35 color=192,192,192 fontsize=11 font="Blue Highway" sensor=program program="cat /proc/cpuinfo | grep '^cpu MHz' | sed -e 's/.*: //' | sed -e 's/\..../ MHz/' | head -n 1" align=right interval=127000 # 2 min
+
+	text x=5 y=50 value="CPU Cache:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=50 fontsize=11 font="Blue Highway" sensor=program program="cat /proc/cpuinfo | grep '^cache size' | sed -e 's/.*: //' | head -n 1" align=right interval=26875000 # 8 hours
+
+	text x=5 y=65 color=192,192,192 value="CPU Temp:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=65 color=192,192,192 fontsize=11 font="Blue Highway" sensor=program program="sensors | grep 'Core 0' | awk '{print $3}'" align=right interval=183000 # 3 min
+
+        text x=5 y=80 color=0,255,255  value="CPU Load:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+        text x=185 y=80 color=0,255,255 sensor=CPU format="%load %" fontsize=11 font="Blue Highway" align=right interval=1000 # 1 sec
+
+	image x=5 y=95 path="images/grill.png" interval=36733000 # 10 hours
+	graph x=5 y=95 w=182 h=41 sensor=cpu cpu=0 points=80 color=0,0,255  interval=1600 # 1 sec ,blue
+        graph x=5 y=95 w=182 h=41 sensor=cpu cpu=1 points=80 color=255,255,0 interval=1600 # 1 sec .yellow
+	graph x=5 y=95 w=182 h=41 sensor=cpu cpu=2 points=80 color=255,0,0 interval=1600 # 1 sec ,red
+	graph x=5 y=95 w=182 h=41 sensor=cpu cpu=3 points=80 color=0,255,0 interval=1600 # 1 sec ,green
+</group>
+image x=75 y=290 path="images/separator.png" interval=36733000 # 10 hours
+                    # [ EOF - CPU info ]
+
+
+# [ Memory info ]
+<group> x=105 y=300
+	text x=5 y=0 value="RAM:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=0 sensor=memory format="%umb / %tm MB  (%fmb free)" fontsize=11 font="Blue Highway" align=right interval=117000 # 2 min
+
+	image x=5 y=15 path="images/bar_back.png" interval=36733000 # 10 hours
+	bar x=5 y=15 path="images/bar_front.png" sensor=memory format="%umb" interval=173000 # 3 min
+
+	text x=5 y=30 value="SWAP:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=30 sensor=memory format="%us / %ts MB  (%fs free)" fontsize=11 font="Blue Highway" align=right interval=244000 # 4 min
+
+	image x=5 y=45 path="images/bar_back.png" interval=36733000 # 10 hours
+	bar x=5 y=45 path="images/bar_front.png" sensor=memory format="%us" interval=358000 # 6 min
+</group>
+image x=5 y=360 path="images/separator.png" interval=36733000 # 10 hours
+                    # [ EOF - Memory info ]
+
+
+# [ Network info ]
+<group> x=105 y=370
+	text x=5 y=0 value="IP:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=0 sensor=program program="curl http://myip.dnsomatic.com/" fontsize=11 font="Blue Highway" align=right  interval=18028000 # 5 hour
+
+	text x=5 y=15 color=192,192,192 value="Connections:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=15 color=192,192,192 fontsize=11 font="Blue Highway" sensor=program program="netstat -n | grep -c tcp" align=right interval=3300 # 3 sec
+
+	text x=5 y=30 value="Down:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=60 y=30 sensor=network device=enp3s0 decimals=1 format="%in KB/s" fontsize=11 font="Blue Highway" align=left interval=1800 # 2 sec
+        text x=185 y=30 sensor=program program="/sbin/ifconfig enp3s0 | grep 'RX byte' | awk '{print $3 $4}'" fontsize=11 font="Blue Highway" align=right interval=123000 # 2 min
+
+	text x=5 y=45 color=192,192,192 value="Up:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=60 y=45 color=192,192,192 sensor=network device=enp3s0 decimals=1 format="%out KB/s"fontsize=11 font="Blue Highway" align=left interval=1800 # 2 sec
+        text x=185 y=45 color=192,192,192 sensor=program program="/sbin/ifconfig enp3s0 | grep 'TX byte' | awk '{print $7 $8}'" fontsize=11 font="Blue Highway" align=right interval=123000 # 2 min
+</group>
+image x=75 y=430 path="images/separator.png" interval=36733000 # 10 hours
+                    # [ EOF - Network info ]
+
+
+# [ Disk info ]
+<group> x=105 y=440
+# [ HDD "/" ]
+	text x=5 y=0 value="/" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=0 sensor=disk format="Used: %up% (%ug GB / %tg GB)" mountpoint="/" fontsize=11 font="Blue Highway" align=right interval=129000 # 2 min
+	image x=5  y=15 path="images/bar_back.png" interval=36733000 # 10 hours
+	bar x=5  y=15 path="images/bar_front.png" sensor=disk mountpoint="/" interval=249000 # 4 min
+# [ HDD "/D" ]
+	text x=5 y=30 value="/D" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=30 sensor=disk format="Used: %up% (%ug GB / %tg GB)" mountpoint="/D" fontsize=11 font="Blue Highway" align=right interval=124000 # 2 min
+	image x=5  y=45 path="images/bar_back.png" interval=36733000 # 10 hours
+	bar x=5  y=45 path="images/bar_front.png" sensor=disk mountpoint="/D" interval=244000 # 4 min
+
+	text x=5 y=60 value="HDD Temp:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=170 y=60 fontsize=11 font="Blue Highway" sensor=program program="nc localhost 7634 | cut -d'|' -f4" align=right interval=186000 # 3 min
+	text x=185 y=60 value="°C" fontsize=11 font="Blue Highway" align=right interval=36733000 # 10 hours
+</group>
+image x=5 y=515 path="images/separator.png" interval=36733000 # 10 hours
+                    # [ EOF - Disk info ]
+
+
+# [ Procces info ]
+<group> x=105 y=525
+	text x=5 y=0  sensor=program program="ps axo comm,user,pcpu,pmem --sort=-pcpu | head -n 10" fontsize=10 font=monospace interval=1330 # 1 sec
+</group>
+image x=75 y=655 path="images/separator.png" interval=36733000 # 10 hours
+                    # [ EOF - Procces info ]
+
+
+# [ GPU info ]
+<group> x=105 y=665
+	text x=5 y=0 value="Make:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=0 fontsize=11 font="Blue Highway" sensor=program program="glxinfo | grep 'OpenGL vendor string:'| awk '{print $4, $5}'" align=right interval=26879000 # 8 hours
+
+	text x=5 y=15 color=192,192,192 value="Model:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=15 color=192,192,192 fontsize=11 font="Blue Highway" sensor=program program="glxinfo | grep 'OpenGL renderer string:'| awk '{print $4, $5, $6}'" align=right interval=26869000 # 8 hours
+
+	text x=5 y=30 value="GPU Version:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=30 fontsize=11 font="Blue Highway" sensor=program program="glxinfo | grep 'OpenGL version string:' | awk '{print $4}'" align=right interval=26889000 # 8 hours
+
+	text x=5 y=45 color=192,192,192 value="GPU Driver:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=185 y=45 color=192,192,192 fontsize=11 font="Blue Highway" sensor=program program="glxinfo | grep 'OpenGL version string:' | awk '{print $6}'" align=right interval=26889000 # 8 hours
+
+	text x=5 y=60 value="GPU Temp:" fontsize=11 font="Blue Highway" interval=36733000 # 10 hours
+	text x=170 y=60 fontsize=11 font="Blue Highway" sensor=program program="nvidia-settings -q gpucoretemp -t" align=right interval=188000 # 3 min
+	text x=185 y=60 value="°C" fontsize=11 font="Blue Highway" align=right interval=36733000 # 10 hours
+</group>
+                    # [ EOF - GPU info ]
+

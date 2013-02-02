@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE superkaramba_theme>
+<superkaramba_theme>
+  <themefile>system_monitor.theme</themefile>
+  <name>System Monitor</name>
+  <icon>system_monitor.png</icon>
+  <description>System Monitor for plasma on Chakra</description>
+  <author>stasik</author>
+  <author_email>stasikprog@gmail.com</author_email>
+  <version>0.4</version>
+  <license>GPL-2</license>
+</superkaramba_theme>
+
